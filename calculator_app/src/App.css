@@ -84,7 +84,6 @@ body {
 
 .box:hover {
   /* design */
-  border: 1px solid black;
   opacity: 1;
 }
 

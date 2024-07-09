@@ -4,8 +4,7 @@ import { Digit } from "./comoponents/DigitButton";
 import { Operation } from "./comoponents/OperationButton";
 
 function App() {
-	const [{ currOp, prevOp, operation }, dispatch]
-		= useReducer(reducer, { currOp: '', prevOp: '', operation: '' });
+	const [{ currOp, prevOp, operation }, dispatch] = useReducer(reducer, { currOp: '', prevOp: '', operation: '' });
 
 	return (
 		<div className="calculator-container">
@@ -42,9 +41,13 @@ function App() {
 function reducer(state, { type, payload }) {
 	switch (type) {
 		case 'add_number':
+			if (state.overwrite) { return { ...state, currOp: payload.digit, overwrite: false } }
 			if (state.currOp == '0' && payload.digit == '0') return state;
 			if (state.currOp.includes('.') && payload.digit == '.') return state;
-			if (state.currOp == '0' && payload.digit !== '.') return { ...state, currOp: payload.digit };
+			if (state.currOp == '0' && payload.digit !== '.') return {
+				...state,
+				currOp: payload.digit
+			};
 			return {
 				...state,
 				currOp: `${state.currOp || ''}${payload.digit}`
@@ -56,8 +59,47 @@ function reducer(state, { type, payload }) {
 			};
 		case 'choose':
 			if (state.currOp == '' && state.prevOp == '') return state;
-			return;
+			if (state.prevOp == '' && state.currOp !== '') return {
+				...state,
+				prevOp: state.currOp, operation: payload.operation, currOp: ''
+			};
+			return {
+				...state,
+				prevOp: evaluate(state), operation: payload.operation, currOp: ''
+			}
+		case 'change_sign':
+			return {
+				...state,
+				prevOp: '', operation: '', currOp: `-${state.currOp}`
+			};
+		case 'evaluate':
+			if (state.currOp == '' || state.operation == '' || state.prevOp == '') return state;
+			return {
+				...state,
+				currOp: evaluate(state), operation: '', prevOp: '', overwrite: true
+			};
 	};
 };
+// evaluate function:
+function evaluate(state) {
+	const prev = parseFloat(state.prevOp);
+	const curr = parseFloat(state.currOp);
 
+	if (isNaN(prev) || isNaN(curr)) return '';
+	let result = '';
+	switch (state.operation) {
+		case '+':
+			return result = prev + curr;
+		case '-':
+			return result = prev - curr;
+		case '*':
+			return result = prev * curr;
+		case '/':
+			return result = prev / curr;
+		case '%':
+			return result = prev % curr;
+	}
+	console.log(result);
+	return result.toString();
+}
 export default App;
