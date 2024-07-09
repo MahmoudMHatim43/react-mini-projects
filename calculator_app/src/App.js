@@ -3,8 +3,8 @@ function App() {
 	return (
 		<div className="calculator-container">
 			<div className="output">
-				<div className="prev">123,000,450</div>
-				<div className="curr">45 + 12 + 9 * 3</div>
+				<div className="prev"></div>
+				<div className="curr"></div>
 			</div>
 			<div className="buttons-container">
 				<button className="box erase">AC</button>
