@@ -28,7 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   /* size */
-  width: 400px;
+  width: 300px;
   height: 500px;
 }
 
@@ -84,6 +84,7 @@ body {
 
 .box:hover {
   /* design */
+  border: 1px solid black;
   opacity: 1;
 }
 

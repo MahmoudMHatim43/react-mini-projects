@@ -1,12 +1,12 @@
 import "./App.css";
 import React from 'react';
-import { Counter } from "./components/Counter";
-import { ToDo } from './components/ToDo';
+import { Counter } from "./components/Counter/Counter";
+
 // the root app component
 function App() {
 	return (
 		<div>
-			<ToDo />
+			<Counter />
 		</div>
 	);
 }
